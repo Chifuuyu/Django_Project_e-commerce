@@ -1,0 +1,7 @@
+{% include 'components/index.html' %}
+{% block content %}
+    <img alt="product" width="300" height="200" src="{{ product.image.url }}"/>
+    <br><p style="font-weight: bold">{{ product.name }}</p>
+    Quantity: {{ product.quantity }}<br>
+    <br>{{ product.description }}<br>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% include 'components/index.html' %}
+{% load static %}
+{% block content %}
+    {% for items in orders %}
+        <div class="row">
+        <div class="col-lg">
+        <img height="180" width="240" src="{{ items.product.imageURL }}">
+        {{ items.product }}
+        {{ items.quantity }} pc/s
+            {% if items.order.status == 'Out for delivery' %}
+            to be delivered on
+            {{ items.order.delivery_date }}
+            {% endif %}
+        </div>
+        </div>
+    {% endfor %}
+{% endblock %}

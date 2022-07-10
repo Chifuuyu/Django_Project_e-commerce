@@ -1,0 +1,11 @@
+{% extends 'components/index.html' %}
+{% load static %}
+{% block content %}
+    {% for tags in tag %}
+        <a href="{% url 'store' tags.name %}">
+        <img height="160" width="240" src="{{ tags.image.url }}">
+
+        {{ tags.name }}
+         </a>
+    {% endfor %}
+{% endblock content%}

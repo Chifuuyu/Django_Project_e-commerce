@@ -1,0 +1,46 @@
+{% extends 'components/index.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+		{% for product in object_list %}
+		<div class="col-lg-4">
+			<img height="200" width="340"  class="thumbnail" src="{{product.imageURL}}">
+			<div class="box-element product">
+				<h6><strong>{{product.name}}</strong></h6>
+                <p>{{ product.description }}</p>
+				<hr>
+                 {% block text %}
+                    {% include 'components/button.html' %}
+                {% endblock %}
+				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+
+				<a class="btn btn-outline-success" href="{% url 'product' product.id %}">View</a>
+				<h4 style="display: inline-block; float: right"><strong>₱{{product.price}}</strong></h4>
+
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+    <script src='/js/cartload.js'></script>
+    <script>
+    function updateUserOrder(productId, action, value){
+	console.log('User is authenticated, sending data...')
+
+
+		fetch({% url 'update_item'%}, {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken':csrftoken,
+			},
+			body:JSON.stringify({'productId':productId, 'action':action, 'value': value})
+		})
+		.then((response) => {
+		   return response.json();
+		})
+		.then((data) => {
+		    location.reload()
+		});
+}
+    </script>
+{% endblock content %}

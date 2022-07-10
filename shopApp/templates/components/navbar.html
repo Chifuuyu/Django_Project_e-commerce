@@ -1,0 +1,37 @@
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">Ecommerce Prototype</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div style="margin-left: auto">
+
+       <form class="d-flex" action="{% url 'search' %}" method="get">
+      <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+          </div>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href={% url 'cart' %}>My Cart</a>
+        </li>
+      </ul>
+        <div class="dropdown">
+      <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="bi bi-person-fill">{{ request.user.first_name }}</span></a>
+          <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="{% url 'order' %}">Orders</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+          </ul>
+        </div>
+    </div>
+</nav>
+    {% else %}
+
+
+{% endif %}
