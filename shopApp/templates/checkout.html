@@ -1,29 +1,26 @@
 {% extends 'components/index.html' %}
 {% load static %}
 {% block content %}
-     <div class="row">
+<div class="col-lg-6">
 			<div class="box-element">
-                <br>
-                <a  class="btn btn-outline-dark mr-auto p-2" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
                 {% if order.get_cart_total != 0 %}
                 <a class="btn btn-success check-out" style="float:right; margin:5px;" href="{% url 'confirm-checkout' %}">Confirm Check Out</a>
                 {% endif %}
-                <br>
-                <br>
-     </div>
-		<div class="col-lg-4">
+				<hr>
 				<h3>Order Summary</h3>
 				<hr>
 				{% for item in items %}
 				<div class="cart-row">
-					<img height="200" width="300" class="row-image" src="{{item.product.imageURL}}">
-					<p>{{item.product.name}}</p>
-					<p>₱{{item.product.price|floatformat:2}}</p>
-					<p>x{{item.quantity}}</p>
+					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+					<div style="flex:2"><p>{{item.product.name}}</p></div>
+					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+					<div style="flex:1"><p>x{{item.quantity}}</p></div>
 				</div>
 				{% endfor %}
 				<h5>Items:   {{order.get_cart_items}}</h5>
-				<h5>Total:   ₱{{order.get_cart_total|floatformat:2}}</h5>
+				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+			</div>
 		</div>
 	</div>
 {% endblock content %}
