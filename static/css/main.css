@@ -66,7 +66,7 @@ h1,h2,h3,h4,h5,h6{
 
 .cart-row{
 	display: flex;
-    align-items: flex-stretch;
+    align-items: flex-start;
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #ececec;
@@ -77,12 +77,10 @@ h1,h2,h3,h4,h5,h6{
 	display: inline-block;
 	font-weight: 700;
 	padding-right:10px;
-
-
 }
 
 .chg-quantity{
-	width: 12px;
+	width: 40px;
 	cursor: pointer;
 	display: block;
 	margin-top: 5px;
