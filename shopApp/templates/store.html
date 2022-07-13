@@ -4,7 +4,7 @@
     <div class="row">
 		{% for product in products %}
 		<div class="col-lg-4">
-			<img height="200" width="240"  class="thumbnail" src="{{product.imageURL}}">
+			<img class="thumbnail" src="{{product.imageURL}}">
 			<div class="box-element product">
             {% if product.quantity == 0 %}
                 <p style="margin-left: 60px; margin-top: 30px; font-weight: bold;">Out of Stock</p>
