@@ -14,7 +14,6 @@ for (let i = 0; i < updateBtn.length; i++) {
 const AddBtn = document.getElementsByClassName('addQuantity')
 for (let i = 0; i < AddBtn.length; i++) {
 	AddBtn[i].addEventListener('click', function(){
-		console.log('clicked+');
 		let add = document.getElementsByClassName('quantity');
 		let value = parseInt(add[i].value)
 		if (value<100) {

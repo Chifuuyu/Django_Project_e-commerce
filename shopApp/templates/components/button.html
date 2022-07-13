@@ -13,7 +13,7 @@ input::-webkit-inner-spin-button {
   <div class="input-group-prepend">
     <button type="button" id="addQuantity-{{ product.id }}" class="btn btn-outline-secondary addQuantity">+</button>
   </div>
-  <input style="text-align: center;" type="number" id="quantity-{{ product.id }}" disabled value="1" min="1" max="100" class="form-control quantity" aria-label="Text input with segmented dropdown button">
+  <input style="text-align: center;" type="number" id="quantity-{{ product.id }}" disabled value="1" min="1" class="form-control quantity" aria-label="Text input with segmented dropdown button">
     <div class="input-group-append">
      <button type="button" id="reduceQuantity-{{ product.id }}" class="btn btn-outline-secondary reduceQuantity">&nbsp-&nbsp</button>
     </div>
