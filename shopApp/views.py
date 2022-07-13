@@ -92,10 +92,9 @@ def updateItem(request):
         if orderItem.quantity is None:
             if value > product_item.quantity:
                 orderItem.quantity = product_item.quantity
-                messages.success(request,
-                                 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
+                messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
             else:
-                orderItem.quantity += value
+                orderItem.quantity = value
                 messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
         else:
             if orderItem.quantity < product_item.quantity:
