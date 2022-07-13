@@ -59,11 +59,10 @@
 </head>
 {% include 'components/navbar.html' %}
 <body>
-{% include 'components/message.html' %}
  <div class="container">
-            <br>
+ <br>
+      {% include 'components/message.html' %}
 {% block content %}
-
 {% endblock %}
  </div>
  <script>
@@ -72,7 +71,7 @@
          setTimeout(
          function() {
              msg.style.display = 'none';
-         }, 2000);
+         }, 3000);
      }else{
 
      }
