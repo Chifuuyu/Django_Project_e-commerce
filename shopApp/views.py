@@ -68,7 +68,7 @@ def store(request, category):
 @login_required(login_url='login')
 def product(request, pk):
     productElement = Product.objects.get(id=pk)
-    title = 'product/'+ productElement.name
+    title = 'product/' + productElement.name
     context = {'product': productElement, 'title': title}
     return render(request, 'product.html', context)
 
@@ -90,21 +90,33 @@ def updateItem(request):
 
     if action == 'add':
         if orderItem.quantity is None:
-            orderItem.quantity = value
-            messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
+            if value > product_item.quantity:
+                orderItem.quantity = product_item.quantity
+                messages.success(request,
+                                 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
+            else:
+                orderItem.quantity += value
+                messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
         else:
-            orderItem.quantity += value
-            messages.success(request,
-                             'Updated total of your cart ' + orderItem.product.name + ", " + "Quantity: " + str(
-                                 orderItem.quantity))
+            if orderItem.quantity < product_item.quantity:
+                if value > product_item.quantity:
+                    orderItem.quantity = product_item.quantity
+                    messages.success(request, 'Updated total of your cart ' + orderItem.product.name + ", "
+                                     + "Quantity: " + str(orderItem.quantity))
+                else:
+                    orderItem.quantity += value
+                    messages.success(request, 'Updated total of your cart ' + orderItem.product.name + ", "
+                                     + "Quantity: " + str(orderItem.quantity))
+            else:
+                messages.warning('Order must not exceed stock limit')
+
     if action == 'plus':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'minus':
         orderItem.quantity = (orderItem.quantity - 1)
 
     orderItem.save()
-
-    if orderItem.quantity <= 0:
+    if orderItem is None:
         print('true')
         orderItem.delete()
 
@@ -201,8 +213,6 @@ def confirm_checkout(request):
         z = y.quantity - i.quantity
         y.quantity = z
         y.save()
-
-
 
     messages.info(request, "Ordered Successfully")
     return HttpResponseRedirect(reverse_lazy('home'))
