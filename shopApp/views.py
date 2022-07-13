@@ -98,7 +98,7 @@ def updateItem(request):
                 messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
         else:
             if orderItem.quantity < product_item.quantity:
-                if value > product_item.quantity:
+                if orderItem.quantity + value > product_item.quantity:
                     orderItem.quantity = product_item.quantity
                     messages.success(request, 'Updated total of your cart ' + orderItem.product.name + ", "
                                      + "Quantity: " + str(orderItem.quantity))
@@ -107,7 +107,7 @@ def updateItem(request):
                     messages.success(request, 'Updated total of your cart ' + orderItem.product.name + ", "
                                      + "Quantity: " + str(orderItem.quantity))
             else:
-                messages.warning('Order must not exceed stock limit')
+                messages.warning(request, 'Order must not exceed stock limit')
 
     if action == 'plus':
         orderItem.quantity = (orderItem.quantity + 1)
@@ -115,7 +115,8 @@ def updateItem(request):
         orderItem.quantity = (orderItem.quantity - 1)
 
     orderItem.save()
-    if orderItem is None:
+
+    if orderItem == 0:
         print('true')
         orderItem.delete()
 
