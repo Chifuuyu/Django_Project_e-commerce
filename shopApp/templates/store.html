@@ -3,23 +3,24 @@
 {% block content %}
     <div class="row">
 		{% for product in products %}
-		<div class="col-lg-3">
+		<div class="col-lg-4">
 			<img class="thumbnail" src="{{product.imageURL}}">
-			<div class="box-element product">
-            {% if product.quantity == 0 %}
-                <p style="margin-left: 60px; margin-top: 30px; font-weight: bold;">Out of Stock</p>
-            {% endif %}
-            {% if product.quantity != 0 %}
+			<div class="box-element product" style="margin-left: 60px">
+
                 <input class="prod-quantity" style="text-align: center; margin-left: 30px; margin-top: 30px; margin-bottom: 30px" disabled value="{{ product.quantity }}">
 				<h6><strong>{{product.name}}</strong></h6>
                 <p>{{ product.description }}</p>
-				<hr>
+				<hr>{% if product.quantity != 0 %}
                  {% block text %}
                     {% include 'components/button.html' %}
                 {% endblock %}
 				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
 				<!-- <a class="btn btn-outline-success" href="{% url 'product' product.id %}">View</a> -->
                 <h4 style="display: inline-block; float: right"><strong>₱{{product.price}}</strong></h4>
+            {% endif %}
+            {% if product.quantity == 0 %}
+                <br>
+                <p style="text-align: center; font-weight: 700; font-size: 30px">Out of Order</p>
             {% endif %}
 			</div>
 		</div>
