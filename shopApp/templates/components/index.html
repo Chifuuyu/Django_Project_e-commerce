@@ -60,9 +60,12 @@
 {% include 'components/navbar.html' %}
 <body>
 {% include 'components/message.html' %}
+ <div class="container">
+            <br>
 {% block content %}
 
 {% endblock %}
+ </div>
  <script>
      let msg = document.getElementById('msg')
      if(document.contains(msg)){

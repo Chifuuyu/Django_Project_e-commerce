@@ -5,7 +5,7 @@
 		{% for product in products %}
 		<div class="col-lg-4">
 			<img class="thumbnail" src="{{product.imageURL}}">
-			<div class="box-element product" style="margin-left: 60px">
+			<div class="box-element product">
 
                 <input class="prod-quantity" style="text-align: center; margin-left: 30px; margin-top: 30px; margin-bottom: 30px" disabled value="{{ product.quantity }}">
 				<h6><strong>{{product.name}}</strong></h6>
@@ -26,6 +26,7 @@
 		</div>
 		{% endfor %}
 	</div>
+    <br><br>
     <script src='/static/js/cartload.js'></script>
     <script>
     function updateUserOrder(productId, action, value){
