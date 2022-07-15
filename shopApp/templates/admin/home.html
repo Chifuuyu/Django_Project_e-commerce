@@ -8,13 +8,12 @@
 
 
     <script>
+    let code = ''
 document.addEventListener("keypress", function(e) {
-  if (e.target.tagName !== "INPUT") {
-    const input = document.querySelector(".my-input");
-    input.focus();
-    input.value = e.key;
-    e.preventDefault();
+  if (e.key === "Enter") {
+      code = e.key;
   }
+  code = ''
 });
     </script>
 {% endblock %}
