@@ -2,18 +2,18 @@
 {% load static %}
 {% block content %}
 {% include 'admin/stats.html' %}
-<input type="text" class="my-input">
+<input type="text" id="my-input">
 
 
 
 
     <script>
-    let code = ''
-document.addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-      code = e.key;
-  }
-  code = ''
-});
+        const x = document.getElementById('my-input');
+        document.addEventListener("keypress", function(e) {
+            if (e.target.tagName !== "INPUT") {
+                x.focus();
+                x.value = e.key;
+            }
+        });
     </script>
 {% endblock %}
