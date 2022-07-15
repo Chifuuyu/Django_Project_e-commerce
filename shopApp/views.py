@@ -1,3 +1,4 @@
+import datetime
 import json
 import random
 
@@ -22,10 +23,13 @@ from .utils import cartData
 @login_required(login_url='login')
 def home(request):
     title = 'Home'
-    context = {'tag': Tag.objects.all(), 'title': title}
+
     if request.user.is_superuser:
+        orderItems = OrderItem.objects.filter(order__complete=True)
+        context ={}
         return render(request, 'admin/home.html', context)
 
+    context = {'tag': Tag.objects.all(), 'title': title}
     return render(request, 'components/home.html', context)
 
 
@@ -176,19 +180,6 @@ def logout_request(request):
     return HttpResponseRedirect(reverse_lazy('login'))
 
 
-"""def orderInfo(request, pk):
-    order = Order.objects.get(id=pk)
-    custName = order.customer.name
-    prodName = order.product.name
-    orderPrice = order.product.price
-    ordStatus = order.status
-    generated_bCode = order.barcode.image
-
-    context = {'custName': custName, 'prodName': prodName, 'ordStatus': ordStatus, 'orderPrice': orderPrice,
-               'orderId': order.id, 'generated_bCode': generated_bCode}
-    return render(request, '', context)"""
-
-
 @login_required(login_url='login')
 def confirm_checkout(request):
     bar_code = BarCode
@@ -203,6 +194,7 @@ def confirm_checkout(request):
     except:
         orders.transaction_id = transaction_id
         orders.complete = True
+        orders.date_created = datetime.now()
         orders.save()
         bar_code.objects.create(
             order_id=orders.id,
