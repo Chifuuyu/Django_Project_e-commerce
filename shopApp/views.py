@@ -23,8 +23,10 @@ from .utils import cartData
 def home(request):
     title = 'Home'
     context = {'tag': Tag.objects.all(), 'title': title}
+    if request.user.is_superuser:
+        return render(request, 'admin/home.html', context)
 
-    return render(request, 'customer/templates/components/home.html', context)
+    return render(request, 'components/home.html', context)
 
 
 @login_required(login_url='login')
@@ -92,10 +94,12 @@ def updateItem(request):
         if orderItem.quantity is None:
             if value > product_item.quantity:
                 orderItem.quantity = product_item.quantity
-                messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
+                messages.success(request,
+                                 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
             else:
                 orderItem.quantity = value
-                messages.success(request, 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
+                messages.success(request,
+                                 'added ' + orderItem.product.name + ", " + "Quantity: " + str(orderItem.quantity))
         else:
             if orderItem.quantity < product_item.quantity:
                 if orderItem.quantity + value > product_item.quantity:
@@ -162,7 +166,7 @@ def loginPage(request):
             messages.warning(request, 'Username OR password is incorrect')
 
     context = {'title': title}
-    return render(request, 'customer/templates/components/login.html', context)
+    return render(request, 'components/login.html', context)
 
 
 @login_required(login_url='login')

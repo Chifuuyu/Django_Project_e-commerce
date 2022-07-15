@@ -6,10 +6,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
       <div style="margin-left: auto">
-       <form class="d-flex" action="{% url 'search' %}" method="get">
+          {% if not requset.user.is_superuser %}
+           <form class="d-flex" action="{% url 'search' %}" method="get">
       <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
+          {% endif %}
+
           </div>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
@@ -23,7 +26,12 @@
 
          <li class="nav-item dropleft">
                  <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                     <span class="bi bi-person-fill">{{ request.user.first_name }}</span></a>
+                     {% if  request.user.is_superuser %}
+                         <span class="bi bi-person-fill">{{ request.user.username }}</span></a>
+                     {% else %}
+                         <span class="bi bi-person-fill">{{ request.user.first_name }}</span></a>
+                     {% endif %}
+
                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 50px;">
                      <li><a class="dropdown-item" href="#">Settings</a></li>
                       {% if not request.user.is_superuser %}<li><a class="dropdown-item" href="{% url 'order' %}">Orders</a></li>{% endif %}
