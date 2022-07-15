@@ -3,7 +3,7 @@ from .models import *
 
 
 def cookieCart(request):
-    # Create empty cart for now for non-logged in user
+    # Create empty cart for now for non-logged in customer
     try:
         cart = json.loads(request.COOKIES['cart'])
     except:

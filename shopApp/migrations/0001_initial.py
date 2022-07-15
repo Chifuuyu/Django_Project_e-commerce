@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=200, null=True)),
                 ('email', models.CharField(max_length=200, null=True)),
                 ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('customer', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

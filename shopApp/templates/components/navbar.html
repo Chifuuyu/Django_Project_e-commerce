@@ -6,7 +6,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
       <div style="margin-left: auto">
-
        <form class="d-flex" action="{% url 'search' %}" method="get">
       <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
       <button class="btn btn-outline-success" type="submit">Search</button>
@@ -16,22 +15,24 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
+          {% if not request.user.is_superuser %}
         <li class="nav-item">
-          <a class="nav-link" href={% url 'cart' %}>My Cart</a>
+          <a class="nav-link" href={% url 'cart' %}> My Cart</a>
         </li>
-      </ul>
-        <div class="dropdown">
-      <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="bi bi-person-fill">{{ request.user.first_name }}</span></a>
-          <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="{% url 'order' %}">Orders</a></li>
-              <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
-          </ul>
-        </div>
+          {% endif %}
+
+         <li class="nav-item dropleft">
+                 <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                     <span class="bi bi-person-fill">{{ request.user.first_name }}</span></a>
+                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 50px;">
+                     <li><a class="dropdown-item" href="#">Settings</a></li>
+                      {% if not request.user.is_superuser %}<li><a class="dropdown-item" href="{% url 'order' %}">Orders</a></li>{% endif %}
+                     <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                 </ul>
+        </li>
+            </ul>
     </div>
 </nav>
-    {% else %}
 
 
 {% endif %}

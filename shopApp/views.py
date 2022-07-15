@@ -24,7 +24,7 @@ def home(request):
     title = 'Home'
     context = {'tag': Tag.objects.all(), 'title': title}
 
-    return render(request, 'home.html', context)
+    return render(request, 'customer/home.html', context)
 
 
 @login_required(login_url='login')
@@ -37,7 +37,7 @@ def cart(request):
     title = 'My Cart'
 
     context = {'items': items, 'order': order, 'cartItems': cartItems, 'title': title}
-    return render(request, 'cart.html', context)
+    return render(request, 'customer/cart.html', context)
 
 
 @login_required(login_url='login')
@@ -50,7 +50,7 @@ def checkout(request):
     title = 'Check Out'
 
     context = {'items': items, 'order': order, 'cartItems': cartItems, 'title': title}
-    return render(request, 'checkout.html', context)
+    return render(request, 'customer/checkout.html', context)
 
 
 @login_required(login_url='login')
@@ -59,7 +59,7 @@ def store(request, category):
         products = Product.objects.filter(tags__name=category)
         title = 'Store/' + category
         context = {'products': products, 'title': title}
-        return render(request, 'store.html', context)
+        return render(request, 'customer/store.html', context)
     else:
         messages.warning('No category like this')
         return redirect('home')
@@ -70,7 +70,7 @@ def product(request, pk):
     productElement = Product.objects.get(id=pk)
     title = 'product/' + productElement.name
     context = {'product': productElement, 'title': title}
-    return render(request, 'product.html', context)
+    return render(request, 'customer/product.html', context)
 
 
 @login_required(login_url='login')
@@ -143,7 +143,7 @@ def register(request):
             messages.success(request, 'Account was created for ' + username)
             return HttpResponseRedirect(reverse_lazy('login'))
     context = {'form': form, 'title': title}
-    return render(request, 'register.html', context)
+    return render(request, 'customer/register.html', context)
 
 
 @unauthenticated_user
@@ -162,7 +162,7 @@ def loginPage(request):
             messages.warning(request, 'Username OR password is incorrect')
 
     context = {'title': title}
-    return render(request, 'login.html', context)
+    return render(request, 'customer/login.html', context)
 
 
 @login_required(login_url='login')
@@ -224,7 +224,7 @@ def order(request):
     orders.all()
     title = 'My Orders'
     context = {'orders': orders, 'title': title}
-    return render(request, 'orders.html', context)
+    return render(request, 'customer/orders.html', context)
 
 
 class SearchView(ListView):
