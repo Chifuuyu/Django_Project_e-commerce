@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselExam" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner" id="carousel-inner-items">
        {% for tags in tag %}
            {% if forloop.first %}
@@ -27,11 +27,4 @@
   </button>
 </div>
     <script src="/static/js/carousel.js"></script>
-        <script type="text/javascript">
-    $(document).ready(function() {
-    $("#carousel-items").on("slid", function(){
-        console.log('working');
-    });
-    });
-    </script>
 {% endblock content%}
