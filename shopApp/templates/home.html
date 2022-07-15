@@ -27,4 +27,11 @@
   </button>
 </div>
     <script src="/static/js/carousel.js"></script>
+        <script type="text/javascript">
+    $(document).ready(function() {
+    $("#carousel-items").on("slid", function(){
+        console.log('working');
+    });
+    });
+    </script>
 {% endblock content%}
