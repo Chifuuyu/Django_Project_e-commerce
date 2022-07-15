@@ -24,7 +24,7 @@ def home(request):
     title = 'Home'
     context = {'tag': Tag.objects.all(), 'title': title}
 
-    return render(request, 'customer/home.html', context)
+    return render(request, 'customer/templates/components/home.html', context)
 
 
 @login_required(login_url='login')
@@ -143,7 +143,7 @@ def register(request):
             messages.success(request, 'Account was created for ' + username)
             return HttpResponseRedirect(reverse_lazy('login'))
     context = {'form': form, 'title': title}
-    return render(request, 'customer/register.html', context)
+    return render(request, 'customer/templates/components/register.html', context)
 
 
 @unauthenticated_user
@@ -162,7 +162,7 @@ def loginPage(request):
             messages.warning(request, 'Username OR password is incorrect')
 
     context = {'title': title}
-    return render(request, 'customer/login.html', context)
+    return render(request, 'customer/templates/components/login.html', context)
 
 
 @login_required(login_url='login')
