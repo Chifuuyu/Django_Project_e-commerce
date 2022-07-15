@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import json
 import random
 
@@ -26,7 +26,23 @@ def home(request):
 
     if request.user.is_superuser:
         orderItems = OrderItem.objects.filter(order__complete=True)
-        context ={}
+        orders = Order.objects.filter(complete=True)
+        weeklySales = OrderItem.objects.filter(order__complete=True, date_created__range=[datetime.now() -
+                                                                                          timedelta(days=7),
+                                                                                          datetime.today()])
+        x = 0
+        y = 0
+        z = 0
+        for i in orderItems:
+            z += i.get_total
+        z = "₱{:0,.2f}".format(z)
+        for i in orders:
+            y += i.get_cart_items
+        for i in weeklySales:
+            x += i.get_total
+        x = "₱{:0,.2f}".format(x)
+
+        context = {'totalSales': z, 'totalOrders': y, 'weekSales': x}
         return render(request, 'admin/home.html', context)
 
     context = {'tag': Tag.objects.all(), 'title': title}
@@ -151,7 +167,7 @@ def register(request):
             messages.success(request, 'Account was created for ' + username)
             return HttpResponseRedirect(reverse_lazy('login'))
     context = {'form': form, 'title': title}
-    return render(request, 'customer/templates/components/register.html', context)
+    return render(request, 'components/register.html', context)
 
 
 @unauthenticated_user
@@ -194,7 +210,7 @@ def confirm_checkout(request):
     except:
         orders.transaction_id = transaction_id
         orders.complete = True
-        orders.date_created = datetime.now()
+        orders.date_created = datetime.today()
         orders.save()
         bar_code.objects.create(
             order_id=orders.id,

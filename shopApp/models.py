@@ -63,7 +63,7 @@ class Order(models.Model):
     )
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     complete = models.BooleanField(default=False)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    date_created = models.DateTimeField(blank=True, null=True)
     transaction_id = models.CharField(max_length=11, null=True, unique=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS, default='Pending')
     delivery_date = models.DateField(null=True, blank=True, default=date.today)
