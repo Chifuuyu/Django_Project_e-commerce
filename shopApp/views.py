@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import json
 import random
+from django.utils import timezone
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -27,9 +28,10 @@ def home(request):
     if request.user.is_superuser:
         orderItems = OrderItem.objects.filter(order__complete=True)
         orders = Order.objects.filter(complete=True)
-        weeklySales = OrderItem.objects.filter(order__complete=True, date_created__range=[datetime.now() -
+
+        weeklySales = OrderItem.objects.filter(order__complete=True, date_created__range=[timezone.now() -
                                                                                           timedelta(days=7),
-                                                                                          datetime.today()])
+                                                                                          timezone.now()])
         x = 0
         y = 0
         z = 0
@@ -210,7 +212,7 @@ def confirm_checkout(request):
     except:
         orders.transaction_id = transaction_id
         orders.complete = True
-        orders.date_created = datetime.today()
+        orders.date_created = timezone.now()
         orders.save()
         bar_code.objects.create(
             order_id=orders.id,
