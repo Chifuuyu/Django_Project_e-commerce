@@ -2,13 +2,9 @@
 {% load static %}
 {% block content %}
 {% include 'admin/stats.html' %}
-<input type="text" id="my-input">
-
-
-
 
     <script>
-        const x = document.getElementById('my-input');
+        const x = document.getElementById('search_bar');
         document.addEventListener("keypress", function(e) {
             if (e.target.tagName !== "INPUT") {
                 x.focus();

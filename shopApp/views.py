@@ -251,3 +251,15 @@ class SearchView(ListView):
             Q(name__icontains=query) | Q(description__icontains=query)
         )
         return object_list
+
+
+class SearchViewForAdmin(ListView):
+    model = Product
+    template_name = 'components/search.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        object_list = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+        return object_list
