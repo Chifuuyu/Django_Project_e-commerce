@@ -6,11 +6,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
       <div style="margin-left: auto">
-          {% if not requset.user.is_superuser %}
-           <form class="d-flex" action="{% url 'search' %}" method="get">
-      <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+          {% if not request.user.is_superuser %}
+              <form class="d-flex" action="{% url 'search' %}" method="get">
+                  <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+          {% else %}
+              <form class="d-flex" action="#" method="get">
+                  <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
           {% endif %}
 
           </div>

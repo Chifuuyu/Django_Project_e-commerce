@@ -9,16 +9,19 @@
 				<h6><strong>{{product.name}}</strong></h6>
                 <p>{{ product.description }}</p>
 				<hr>
+                {% if product.quantity != 0 %}
                  {% block text %}
                     {% include 'components/button.html' %}
                 {% endblock %}
 				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-
 				<a class="btn btn-outline-success" href="{% url 'product' product.id %}">View</a>
 				<h4 style="display: inline-block; float: right"><strong>₱{{product.price}}</strong></h4>
-
-			</div>
-		</div>
+                {% else %}
+                <br>
+                <p style="text-align: center; font-weight: 700; font-size: 30px">Out of Order</p>
+                {% endif %}
+            </div>
+        </div>
 		{% endfor %}
 	</div>
     <script src='/js/cartload.js'></script>
