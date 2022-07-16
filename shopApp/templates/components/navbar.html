@@ -50,7 +50,7 @@
 
 {% endif %}
 {% if request.user.is_superuser %}
-<form class="d-flex" action="#" method="get">
+<form class="d-flex" action="{% url 'searchOrder' %}" method="get">
                   <input style="opacity: 0; margin-top: -100%" class="form-control" id="search_bar" type="search" placeholder="Search" name="q" aria-label="Search">
                   <button style="opacity: 0; margin-top: -100%" class="btn btn-outline-success" type="submit">Search</button>
               </form>

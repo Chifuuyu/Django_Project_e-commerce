@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView
 
 from .decorators import *
-from .forms import CreateUserForm
+from .forms import CreateUserForm, orderForm
 # Create your views here.
 from .models import *
 from .utils import cartData
@@ -30,9 +30,10 @@ def home(request):
         orderItems = OrderItem.objects.filter(order__complete=True, order__status='Delivered')
         orders = Order.objects.filter(complete=True)
 
-        weeklySales = OrderItem.objects.filter(order__complete=True, order__status='Delivered' ,date_created__range=[timezone.now() -
-                                                                                          timedelta(days=7),
-                                                                                          timezone.now()])
+        weeklySales = OrderItem.objects.filter(order__complete=True, order__status='Delivered',
+                                               date_created__range=[timezone.now() -
+                                                                    timedelta(days=7),
+                                                                    timezone.now()])
         x = 0
         y = 0
         z = 0
@@ -202,7 +203,7 @@ def logout_request(request):
 @login_required(login_url='login')
 def confirm_checkout(request):
     bar_code = BarCode
-    transaction_id = random.randint(10000000000, 99999999999)
+    transaction_id = random.randint(100000000000, 999999999999)
     customer = request.user.customer
     orders, created = Order.objects.get_or_create(customer=customer, complete=False)
     Orders = Order.objects.all()
@@ -242,6 +243,20 @@ def order(request):
     return render(request, 'customer/orders.html', context)
 
 
+def adminOrderview(request, pk):
+    orderitems = OrderItem.objects.filter(order__id=pk)
+    orders = Order.objects.filter(id=pk)
+    total = 0
+    total_items = 0
+    for i in orderitems:
+        total += i.get_total
+    for i in orders:
+        total_items += i.get_cart_items
+    orderitems.all()
+    context = {'order': orderitems, 'total': total, 'total_items': total_items}
+    return render(request, 'admin/order.html', context)
+
+
 class SearchView(ListView):
     model = Product
     template_name = 'components/search.html'
@@ -270,26 +285,54 @@ class SearchViewForAdmin(ListView):
         return result
 
 
-class SearchUsingBarcode(ListView):
-    model = Order
-    template_name = 'admin/search.html'
+class searchUsingBarcode(ListView):
+    model = OrderItem
+    template_name = 'admin/searchBarCode.html'
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        specificOrder = Order.objects.filter(
-            Q(transaction_id=query)
-        )
-        return specificOrder
+        search = query[1:-1]
+        print(search)
 
-def adminOrderview(request, pk):
-    orderitems = OrderItem.objects.filter(order__id=pk)
-    orders = Order.objects.filter(id=pk)
-    total = 0
-    total_items = 0
-    for i in orderitems:
-        total += i.get_total
+        object_list = OrderItem.objects.filter(
+            Q(order__transaction_id__icontains=search)
+        )
+        return object_list
+
+
+def updateDelivery(request, pk):
+    orderItems = OrderItem.objects.filter(order__complete=True, order__status='Delivered')
+    weeklySales = OrderItem.objects.filter(order__complete=True, order__status='Delivered',
+                                           date_created__range=[timezone.now() -
+                                                                timedelta(days=7),
+                                                                timezone.now()])
+
+    orderItem = Order.objects.get(id=pk)
+    orders = Order.objects.filter(complete=True)
+    form = orderForm(instance=orderItem)
+    dateToday = timezone.now()
+    x = 0
+    y = 0
+    z = 0
+    for i in orderItems:
+        z += i.get_total
+    z = "₱{:0,.2f}".format(z)
     for i in orders:
-        total_items += i.get_cart_items
-    orderitems.all()
-    context = {'order': orderitems, 'total': total, 'total_items': total_items}
-    return render(request, 'admin/order.html', context)
+        y += i.get_cart_items
+    for i in weeklySales:
+        x += i.get_total
+    x = "₱{:0,.2f}".format(x)
+
+    if request.method == 'POST':
+        form = orderForm(request.POST, instance=orderItem)
+        print('true')
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Order updated')
+            print('WORKING')
+            return redirect('home')
+        else:
+            print('not working')
+
+    context = {'totalSales': z, 'totalOrders': y, 'weekSales': x, 'orders': orders, 'dateToday': dateToday, 'form': form}
+    return render(request, 'admin/home.html', context)

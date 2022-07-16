@@ -34,7 +34,9 @@ urlpatterns = [
     path('order/', views.order, name='order'),
     path('search/', views.SearchView.as_view(), name='search'),
     path('searchAdmin/', views.SearchViewForAdmin.as_view(), name='searchAdmin'),
-    path('admin-order/<str:pk>/', views.adminOrderview, name="adminOrder")
+    path('searchBarcode/', views.searchUsingBarcode.as_view(), name='searchOrder'),
+    path('admin-order/<str:pk>/', views.adminOrderview, name="adminOrder"),
+    path('updated/<int:pk>/', views.updateDelivery, name="updateDelivery")
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

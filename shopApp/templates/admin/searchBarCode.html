@@ -1,0 +1,22 @@
+{% extends 'components/index.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+		{% for object in object_list %}
+                <div class="col-lg-4">
+			<div class="box-element product">
+                <p style="text-align: center"><strong>Order Id: {{ object.order.id }}</strong></p>
+                <p style="text-align: center">Transaction Id: {{ object.order.transaction_id }}</p>
+                <hr>
+                <p>Date Ordered: {{ object.date_created }}</p>
+                <p style=" margin-top: 15px">Order Total: ₱{{ object.get_total }}</p>
+                <p>Who Ordered: {{ object.order.customer.name }}</p>
+				<hr>
+                <div class="text-center">
+                    <a class="btn btn-outline-success" href="{% url 'adminOrder' object.order.id %}">Delivered</a>
+                </div>
+            </div>
+        </div>
+		{% endfor %}
+	</div>
+{% endblock %}

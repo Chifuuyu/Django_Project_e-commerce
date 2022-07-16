@@ -64,7 +64,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     complete = models.BooleanField(default=False)
     date_created = models.DateTimeField(blank=True, null=True)
-    transaction_id = models.CharField(max_length=11, null=True, unique=True)
+    transaction_id = models.CharField(max_length=13, null=True, unique=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS, default='Pending')
     delivery_date = models.DateField(null=True, blank=True, default=date.today)
 
@@ -107,9 +107,9 @@ class BarCode(models.Model):
         return '{}{}'.format(self.order.customer, self.order.transaction_id)
 
     def save(self, *args, **kwargs):
-        UPC = barcode.get_barcode_class('UPC')
-        upc = UPC(f'{self.order.transaction_id}', writer=ImageWriter())
+        EAN = barcode.get_barcode_class('ean13')
+        ean = EAN(f'{self.order.transaction_id}', writer=ImageWriter())
         buffer = BytesIO()
-        upc.write(buffer)
+        ean.write(buffer)
         self.barcode.save(f'{self.order.transaction_id}.png', File(buffer), save=False)
         return super().save(*args, **kwargs)

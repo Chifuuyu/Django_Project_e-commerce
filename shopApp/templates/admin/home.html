@@ -13,29 +13,80 @@
         });
     </script>
     <div class='col-12' style='padding-top: 30px'>
+
         <h5> Recent Orders</h5>
     <table class='table'>
         <thead>
             <tr>
                 <th scope='col'>ID</th>
                 <th scope='col'>Name</th>
+                <th scope="col">Delivery Date</th>
                 <th scope='col'>Status</th>
                 <th scope='col'>    </th>
+                <th scope="col">Print</th>
 
             </tr>
         </thead>
         <tbody>
         {%for i in orders%}
+        <form id="form_id" action="{% url 'updateDelivery' i.id %}" method="POST">
+         {% csrf_token %}
         <tr>
         <th scope='row'>{{ i.id }}</th>
         <td>{{i.customer.name}}</td>
-        <td>{{i.status}}</td>
-        <td><button>Update</button></td>
+            <td>
+                {% if i.status != 'Delivered' %}
+                <input type="date" id="delivery_date" name="delivery_date" value="{{ i.delivery_date|date:"Y-m-d" }}" required/>
+                {% else %}
+                {{ i.delivery_date }}
+                {% endif %}
+            </td>
+            <td>
+            {% if i.status != 'Delivered' %}
+                <select class="form-select" aria-label="Default select example" id="status"  name="status">
+                 <option {% if i.status == 'Pending' %}selected {% endif %} value="Pending">Pending</option>
+                 <option {% if i.status == 'Out for delivery' %}selected {% endif %}  value="Out for delivery">Out for delivery</option>
+                </select>
+            {% else %}
+                <p>Delivered</p>
+            {% endif %}
+            </td>
+        {% if i.status != 'Delivered' %}
+            <td><button type="submit" id="update_btn" value="Update" class="btn btn-success">Update</button></td>
+        {% else %}
+            <td></td>
+        {% endif %}
+        {% if i.status == 'Out for delivery' %}
+            <td>
+                <a class="btn btn-primary">&nbsp Print &nbsp</a>
+            </td>
+        {% else %}
+            <td></td>
+        {% endif %}
         </tr>
+        </form>
         {%endfor%}
         </tbody>
        
     </table>
+        <script>
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + '-' + mm+ '-' + dd;
+            document.getElementById('delivery_date').min = today
+            update = document.getElementById('update_btn')
+            update.addEventListener('click', (ev) =>{
+                if (document.getElementById('delivery_date').value < today){
+                ev.preventDefault()
+                    document.getElementById('delivery_date').focus()
+                    document.getElementById('delivery_date').style.borderBlockColor = 'red'
+                    alert('Delivery Date must not be lesser than today')
+            }
+            }
+            )
 
+        </script>
 </div>
 {% endblock %}
