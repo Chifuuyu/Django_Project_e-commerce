@@ -297,6 +297,10 @@ class searchUsingBarcode(ListView):
         object_list = OrderItem.objects.filter(
             Q(order__transaction_id__icontains=search)
         )
+        updateOrder = Order.objects.get(transaction_id=search)
+        updateOrder.status = 'Delivered'
+        updateOrder.save()
+        messages.success(self.request, 'Update Successfully')
         return object_list
 
 

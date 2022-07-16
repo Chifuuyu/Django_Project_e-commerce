@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
 		{% for object in object_list %}
-                <div class="col-lg-4">
+                <div class="col-lg-12">
 			<div class="box-element product">
                 <p style="text-align: center"><strong>Order Id: {{ object.order.id }}</strong></p>
                 <p style="text-align: center">Transaction Id: {{ object.order.transaction_id }}</p>
@@ -13,7 +13,8 @@
                 <p>Who Ordered: {{ object.order.customer.name }}</p>
 				<hr>
                 <div class="text-center">
-                    <a class="btn btn-outline-success" href="{% url 'adminOrder' object.order.id %}">Delivered</a>
+                    <a class="btn btn-primary" href="{% url 'home' %}">Return Home</a>
+                    <a class="btn btn-outline-success">Delivered</a>
                 </div>
             </div>
         </div>
