@@ -27,10 +27,10 @@ def home(request):
     title = 'Home'
 
     if request.user.is_superuser:
-        orderItems = OrderItem.objects.filter(order__complete=True)
+        orderItems = OrderItem.objects.filter(order__complete=True, order__status='Delivered')
         orders = Order.objects.filter(complete=True)
 
-        weeklySales = OrderItem.objects.filter(order__complete=True, date_created__range=[timezone.now() -
+        weeklySales = OrderItem.objects.filter(order__complete=True, order__status='Delivered' ,date_created__range=[timezone.now() -
                                                                                           timedelta(days=7),
                                                                                           timezone.now()])
         x = 0
@@ -45,7 +45,7 @@ def home(request):
             x += i.get_total
         x = "₱{:0,.2f}".format(x)
 
-        context = {'totalSales': z, 'totalOrders': y, 'weekSales': x}
+        context = {'totalSales': z, 'totalOrders': y, 'weekSales': x, 'orders': orders}
         return render(request, 'admin/home.html', context)
 
     context = {'tag': Tag.objects.all(), 'title': title}
@@ -280,3 +280,16 @@ class SearchUsingBarcode(ListView):
             Q(transaction_id=query)
         )
         return specificOrder
+
+def adminOrderview(request, pk):
+    orderitems = OrderItem.objects.filter(order__id=pk)
+    orders = Order.objects.filter(id=pk)
+    total = 0
+    total_items = 0
+    for i in orderitems:
+        total += i.get_total
+    for i in orders:
+        total_items += i.get_cart_items
+    orderitems.all()
+    context = {'order': orderitems, 'total': total, 'total_items': total_items}
+    return render(request, 'admin/order.html', context)

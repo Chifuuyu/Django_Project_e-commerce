@@ -12,4 +12,30 @@
             }
         });
     </script>
+    <div class='col-12' style='padding-top: 30px'>
+        <h5> Recent Orders</h5>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th scope='col'>ID</th>
+                <th scope='col'>Name</th>
+                <th scope='col'>Status</th>
+                <th scope='col'>    </th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {%for i in orders%}
+        <tr>
+        <th scope='row'>{{ i.id }}</th>
+        <td>{{i.customer.name}}</td>
+        <td>{{i.status}}</td>
+        <td><button>Update</button></td>
+        </tr>
+        {%endfor%}
+        </tbody>
+       
+    </table>
+
+</div>
 {% endblock %}

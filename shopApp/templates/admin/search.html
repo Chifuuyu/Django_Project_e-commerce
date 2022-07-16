@@ -25,7 +25,7 @@
                 <p>Who Ordered: {{ object.order.customer.name }}</p>
 				<hr>
                 <div class="text-center">
-                    <a class="btn btn-outline-success" href="#">View Order</a>
+                    <a class="btn btn-outline-success" href="{% url 'adminOrder' object.order.id %}">View Order</a>
                 </div>
             </div>
         </div>
