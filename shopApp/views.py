@@ -2,6 +2,7 @@ from datetime import timedelta
 import json
 import random
 from django.utils import timezone
+from itertools import chain
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -254,12 +255,28 @@ class SearchView(ListView):
 
 
 class SearchViewForAdmin(ListView):
-    model = Product
-    template_name = 'components/search.html'
+    model = OrderItem
+    template_name = 'admin/search.html'
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        object_list = Product.objects.filter(
+        object_list = OrderItem.objects.filter(
+            Q(order__customer__name__icontains=query) | Q(order__transaction_id__icontains=query)
+        )
+        product_list = Product.objects.filter(
             Q(name__icontains=query) | Q(description__icontains=query)
         )
-        return object_list
+        result = chain(object_list, product_list)
+        return result
+
+
+class SearchUsingBarcode(ListView):
+    model = Order
+    template_name = 'admin/search.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        specificOrder = Order.objects.filter(
+            Q(transaction_id=query)
+        )
+        return specificOrder
