@@ -6,8 +6,8 @@
 		<div class="col-lg-4">
 			<img class="thumbnail" src="{{product.imageURL}}">
 			<div class="box-element product">
-
-                <input class="prod-quantity" style="text-align: center; margin-left: 30px; margin-top: 30px; margin-bottom: 30px" disabled value="{{ product.quantity }}">
+				<p style='text-align:center'>Product Stock:</p>
+				<div><input class="prod-quantity w-100" style="margin-bottom: 30px; text-align: center;" disabled value="{{ product.quantity }}"></div>
 				<h6><strong>{{product.name}}</strong></h6>
                 <p>{{ product.description }}</p>
 				<hr>{% if product.quantity != 0 %}
@@ -33,7 +33,7 @@
 	console.log('User is authenticated, sending data...')
 
 
-		fetch({% url 'update_item'%}, {
+		fetch({% url 'update_item' %}, {
 			method:'POST',
 			headers:{
 				'Content-Type':'application/json',

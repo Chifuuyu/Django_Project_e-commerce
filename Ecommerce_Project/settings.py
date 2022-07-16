@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'shopApp',
     'bootstrap',
     'crispy_forms',
-    'qr_code',
 ]
 
 MIDDLEWARE = [
