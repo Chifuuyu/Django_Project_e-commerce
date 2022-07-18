@@ -19,7 +19,7 @@ class Customer(models.Model):
         return self.name
 
 
-class Tag(models.Model):
+class Categorie(models.Model):
     image = models.ImageField(upload_to='img/categoriesShop/', blank=True)
     name = models.CharField(max_length=200, null=True)
 
@@ -34,7 +34,7 @@ class Product(models.Model):
     price = models.DecimalField(null=True, decimal_places=2, max_digits=20)
     description = models.CharField(max_length=200, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-    tags = models.ForeignKey(Tag, null=True, on_delete=models.CASCADE)
+    tags = models.ForeignKey(Categorie, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -61,7 +61,7 @@ class Order(models.Model):
         ('Out for delivery', 'Out for delivery'),
         ('Delivered', 'Delivered'),
     )
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
     complete = models.BooleanField(default=False)
     date_created = models.DateTimeField(blank=True, null=True)
     transaction_id = models.CharField(max_length=13, null=True, unique=True)
