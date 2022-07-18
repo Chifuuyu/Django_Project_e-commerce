@@ -1,36 +1,31 @@
-{% extends 'components/index.html' %}
 {% load static %}
 {% block content %}
-    <!-- <a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Back to Home</a>  only if you need a button back-->
-<div class="row justify-content-center">
-
-    <div class="w-50">
-
-        <br>
-<div class="box-element w-100">
-    <h4 style="text-align: center">SSR One Time Shop</h4>
-            <div class="cart-row">
-                <div style="flex:1">Qty</div>
-                <div style="flex:2"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Unit Price</strong></div>
-                <div style="flex:1"><strong>Amount</strong></div>
-            </div>
+    <script>
+    window.onload = window.print
+    </script>
+    <head>
+    <style>
+        #print-body{
+            margin-left: 30px;
+        }
+    </style>
+    </head>
+    <div id="print-body">
+    <h4 >SSR One Time Shop</h4>
+                <div style="flex:1"></div>
+                <div style="flex:1"></div>
             {% for item in order %}
-            <div class="cart-row">
-                <div style="flex: 1">{{ item.quantity }}</div>
-                <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>₱{{item.product.price|floatformat:2}}</p></div>
-                <div style="flex:1"><p>₱{{item.get_total|floatformat:2}}</p></div>
-            </div>
-            {% endfor %}
-                        <table class="table">
-                <tr>
-                    <th><h6>Items: <strong>{{total_items}}</strong></h6></th>
-                    <th><h6>Total: <strong> ₱{{total|floatformat:2}}</strong></h6></th>
-                </tr>
-            </table>
-<img src="{{ barcode.barcode }}" class="w-100">
-        </div>
+                <div style="flex:1"><strong>Quantity:</strong>{{ item.quantity }}</div>
+                <div style="flex:2"><p><strong>Item Bought:</strong>{{item.product.name}}</p></div>
+                <div style="flex:1"><p><strong>Unit Price:</strong>₱{{item.product.price|floatformat:2}}</p></div>
+                <div style="flex:1"><p><strong>Amount:</strong>₱{{item.get_total|floatformat:2}}</p></div>
+           <h3>Items: <strong>{{total_items}}</strong></h3>
+                    <h3>Total: <strong> ₱{{total|floatformat:2}}</strong></h3>
+                    <h3>Ordered By: {{ item.order.customer.name }}</h3>
+                    <h3>Delivered To: {{ item.order.customer.address }}</h3>
+     {% endfor %}
+    </div>
+<img height="100px" width="250px"src="{{ barcode.barcode.url }}">
 
 
 
