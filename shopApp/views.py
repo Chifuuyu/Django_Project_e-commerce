@@ -49,7 +49,7 @@ def home(request):
         context = {'totalSales': z, 'totalOrders': y, 'weekSales': x, 'orders': orders}
         return render(request, 'admin/home.html', context)
 
-    context = {'tag': Tag.objects.all(), 'title': title}
+    context = {'tag': Categorie.objects.all(), 'title': title}
     return render(request, 'components/home.html', context)
 
 
@@ -81,7 +81,7 @@ def checkout(request):
 
 @login_required(login_url='login')
 def store(request, category):
-    if Tag.objects.filter(name=category):
+    if Categorie.objects.filter(name=category):
         products = Product.objects.filter(tags__name=category)
         title = 'Store/' + category
         context = {'products': products, 'title': title}
