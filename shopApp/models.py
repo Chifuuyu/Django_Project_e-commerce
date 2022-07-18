@@ -1,5 +1,6 @@
 from datetime import date
 from io import BytesIO
+from os import path
 
 import barcode
 from barcode.writer import ImageWriter
@@ -101,16 +102,14 @@ class OrderItem(models.Model):
 
 
 class BarCode(models.Model):
-    barcode = models.ImageField(upload_to='bar_codes/', blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    barcode = models.ImageField(upload_to='bar_codes/', blank=True)
 
     def __str__(self):
         return '{}{}'.format(self.order.customer, self.order.transaction_id)
 
-    def save(self, *args, **kwargs):
-        EAN = barcode.get_barcode_class('ean13')
-        ean = EAN(f'{self.order.transaction_id}', writer=ImageWriter())
-        buffer = BytesIO()
-        ean.write(buffer)
-        self.barcode.save(f'{self.order.transaction_id}.png', File(buffer), save=False)
-        return super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):          # overriding save()
+        fp = BytesIO()
+        barcode.generate('EAN13', f'{self.order.transaction_id}', writer=ImageWriter(), output=fp)
+        self.barcode.save(f'{self.order.transaction_id}.png', File(fp), save=False)
+        super(BarCode, self).save(*args, **kwargs)

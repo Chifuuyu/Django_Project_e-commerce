@@ -256,6 +256,7 @@ def order(request):
 def adminOrderview(request, pk):
     orderitems = OrderItem.objects.filter(order__id=pk)
     orders = Order.objects.filter(id=pk)
+    barCode = BarCode.objects.get(order__transaction_id=orders.get(id=pk).transaction_id)
     total = 0
     total_items = 0
     for i in orderitems:
@@ -263,8 +264,8 @@ def adminOrderview(request, pk):
     for i in orders:
         total_items += i.get_cart_items
     orderitems.all()
-    context = {'order': orderitems, 'total': total, 'total_items': total_items}
-    return render(request, 'admin/order.html', context)
+    context = {'order': orderitems, 'total': total, 'total_items': total_items, 'barcode': barCode}
+    return render(request, 'admin/receipt.html', context)
 
 
 class SearchView(ListView):
