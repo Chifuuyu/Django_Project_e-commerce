@@ -1,8 +1,19 @@
 {% extends 'components/index.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
+<head>
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+</head>
+
+<section style="background-color: #eee;">
+  <div class="container">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-lg-12 col-xl-11">
         <div class="card text-black" style="border-radius: 25px;">
@@ -13,10 +24,11 @@
                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
 
                 <form class="mx-1 mx-md-4" method="POST">
-                    {% csrf_token %}
-                    {% if form.errors %}
+                                        {% csrf_token %}
+                <form1>
+                    {% if form1.errors %}
                                 <p>Please correct the following errors:</p>
-                                {% for field in form %}
+                                {% for field in form1 %}
                                 {% if field.errors %}
                                 <div class="alert alert-warning" id="msg" role="alert">
                                     {{ field.label }}: {{ field.errors|striptags }}
@@ -72,11 +84,31 @@
                     </div>
                   </div>
 
+                    <form2>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="number" id="phone" name="phone" minlength="11" maxlength="11" title="Example: 091234567890" class="form-control" required/>
+                      <label class="form-label" for="phone">Phone</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input id="address" name="address" class="form-control" required/>
+                      <label class="form-label" for="address">Address</label>
+                    </div>
+                  </div>
+
+                    </form2>
 
                     <a href="{% url 'login' %}" class="d-flex justify-content-center mb-4">Already have an account? </a>
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button type="submit" class="btn btn-primary btn-lg">Register</button>
                   </div>
+                </form1>
 
                 </form>
 

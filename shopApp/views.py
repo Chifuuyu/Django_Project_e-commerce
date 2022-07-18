@@ -16,10 +16,14 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView
 
 from .decorators import *
-from .forms import CreateUserForm, orderForm
+from .forms import CreateUserForm, orderForm, customerForm
 # Create your views here.
 from .models import *
 from .utils import cartData
+
+
+def page_not_found_view(request, exception):
+    return render(request, 'components/404.html', status=404)
 
 
 @login_required(login_url='login')
@@ -153,24 +157,30 @@ def updateItem(request):
 @unauthenticated_user
 def register(request):
     title = 'Register'
-    form = CreateUserForm()
+    form1 = customerForm()
+    form2 = CreateUserForm()
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            group = Group.objects.get(name='customer')
-            user.groups.add(group)
-            x = user.first_name + " " + user.last_name
-            Customer.objects.create(
-                user=user,
-                name=x,
-                email=user.email,
-
-            )
-            messages.success(request, 'Account was created for ' + username)
-            return HttpResponseRedirect(reverse_lazy('login'))
-    context = {'form': form, 'title': title}
+        form2 = CreateUserForm(request.POST)
+        form1 = customerForm(request.POST)
+        if form2.is_valid():
+            user = form2.save()
+            if form1.is_valid():
+                phone = form1.cleaned_data['phone']
+                address = form1.cleaned_data['address']
+                username = form2.cleaned_data.get('username')
+                group = Group.objects.get(name='customer')
+                user.groups.add(group)
+                x = user.first_name + " " + user.last_name
+                Customer.objects.create(
+                    user=user,
+                    name=x,
+                    email=user.email,
+                    phone=phone,
+                    address=address,
+                )
+                messages.success(request, 'Account was created for ' + username)
+                return HttpResponseRedirect(reverse_lazy('login'))
+    context = {'form2': form2, 'title': title, 'form1': form1}
     return render(request, 'components/register.html', context)
 
 
@@ -338,5 +348,6 @@ def updateDelivery(request, pk):
         else:
             print('not working')
 
-    context = {'totalSales': z, 'totalOrders': y, 'weekSales': x, 'orders': orders, 'dateToday': dateToday, 'form': form}
+    context = {'totalSales': z, 'totalOrders': y, 'weekSales': x, 'orders': orders, 'dateToday': dateToday,
+               'form': form}
     return render(request, 'admin/home.html', context)
